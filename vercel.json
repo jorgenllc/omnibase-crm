@@ -1,5 +1,9 @@
 {
   "cleanUrls": true,
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": ".",
   "rewrites": [
     { "source": "/", "destination": "/lead_manager.html" }
   ]
