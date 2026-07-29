@@ -1,0 +1,42 @@
+name: Verify Vercel Deployment
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel deployment to go live
+        run: |
+          URL="https://omnibase-crm-baylitx-projects.vercel.app"
+          MAX_RETRIES=18
+          WAIT=10
+
+          echo "Polling $URL (up to $((MAX_RETRIES * WAIT))s)..."
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ Deployment live: $URL returned $STATUS"
+              exit 0
+            fi
+            echo "Attempt $i/$MAX_RETRIES: got HTTP $STATUS — retrying in ${WAIT}s"
+            sleep $WAIT
+          done
+
+          echo "❌ Deployment not ready after $((MAX_RETRIES * WAIT))s (last status: $STATUS)"
+          exit 1
+
+      - name: Verify page content
+        run: |
+          URL="https://omnibase-crm-baylitx-projects.vercel.app"
+          BODY=$(curl -s "$URL")
+
+          if echo "$BODY" | grep -q "OmniBase"; then
+            echo "✅ Page content verified: 'OmniBase' found in response"
+          else
+            echo "❌ Page content check failed: expected 'OmniBase' in HTML"
+            exit 1
+          fi
