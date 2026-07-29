@@ -286,9 +286,9 @@ html[data-theme="dark"] .dup-warn{background:#422006; border-color:#a16207; colo
 .tab-panel.active{display:flex;}
 .badge-seg,.badge-ind,.badge-st{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;}
 
-/* ---- Enrich button ---- */
-.btn-enrich{background:#7c3aed;border-color:#7c3aed;color:#fff;}
-.btn-enrich:hover{background:#6d28d9;}
+/* ---- Enrich button — secondary outline ---- */
+.btn-enrich{background:transparent;border-color:#7c3aed;color:#7c3aed;}
+.btn-enrich:hover{background:rgba(124,58,237,.08);}
 
 /* ---- Logo two-line lock-up ---- */
 .logo-text{display:flex;flex-direction:column;line-height:1.1;}
@@ -449,7 +449,8 @@ body {
 .topbar .btn:hover { background: rgba(255,255,255,.22); }
 .topbar .btn-primary { background: var(--sf-blue); border-color: var(--sf-blue); }
 .topbar .btn-primary:hover { background: var(--sf-blue-dark); }
-.topbar .btn-enrich { background: #6d28d9; border-color: rgba(255,255,255,.2); }
+.topbar .btn-enrich { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.28); color: rgba(255,255,255,.88); }
+.topbar .btn-enrich:hover { background: rgba(255,255,255,.16); }
 .topbar .icon-btn { color: rgba(255,255,255,.82); }
 
 /* ── Sidebar — SLDS dark nav ───────────────────────────── */
@@ -524,7 +525,7 @@ body {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: .05em; color: var(--text-secondary);
 }
-.kpi .value { font-size: 28px; font-weight: 700; margin-top: 6px; }
+.kpi .value { font-size: 44px; font-weight: 800; margin-top: 4px; line-height: 1; letter-spacing: -.02em; }
 .card { border-radius: 4px; box-shadow: var(--shadow-sm); }
 .card h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .mini-table th {
@@ -753,8 +754,8 @@ dialog::backdrop { background: rgba(3,45,96,.35); backdrop-filter: blur(2px); }
 .seg button { border-radius: 4px; }
 
 /* ── SLDS enrich panel ─────────────────────────────────── */
-.btn-enrich { background: #7c3aed; border-color: #7c3aed; color: #fff; }
-.btn-enrich:hover { background: #6d28d9; }
+.btn-enrich { background: transparent; border-color: #7c3aed; color: #7c3aed; }
+.btn-enrich:hover { background: rgba(124,58,237,.08); }
 
 /* ── SLDS List View Picker Bar ─────────────────────────── */
 .list-view-bar {
@@ -1070,7 +1071,7 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
       <button data-nav="import">
         <span class="ico">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        </span><span>Data Loader</span>
+        </span><span>Imports</span>
       </button>
     </nav>
     <div class="sidebar-stats" id="sidebarStats"></div>
@@ -1086,12 +1087,10 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
         <rect x="0" y="13" width="5" height="5" rx="1"/><rect x="6.5" y="13" width="5" height="5" rx="1"/><rect x="13" y="13" width="5" height="5" rx="1"/>
       </svg>
     </button>
-    <span class="topbar-brand">OmniBase</span>
     <div class="search-wrap">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
       <input id="globalSearch" type="search" placeholder="Search companies, contacts, email, city…" aria-label="Global search">
     </div>
-    <span class="saved-indicator" id="savedIndicator">Not saved yet</span>
     <span class="spacer" style="flex:1"></span>
     <button class="btn btn-sm" id="importBtn" title="Import CSV">📥 Import</button>
     <div class="dropdown">
@@ -2017,7 +2016,7 @@ function svgDonut(segments, total){
   return `<svg viewBox="0 0 180 180" width="100%" style="max-height:200px">${arcs}<text x="90" y="86" text-anchor="middle" font-size="26" font-weight="700" fill="var(--text-primary)">${total}</text><text x="90" y="104" text-anchor="middle" font-size="11" fill="var(--text-secondary)">leads</text></svg>`;
 }
 function svgBars(data){
-  if(!data.length) return '<p class="empty-hint">No data yet</p>';
+  if(!data.length) return `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;gap:12px"><svg width="52" height="44" viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.18"><rect x="1" y="22" width="10" height="20" rx="2" fill="var(--accent)"/><rect x="15" y="14" width="10" height="28" rx="2" fill="var(--accent)"/><rect x="29" y="6" width="10" height="36" rx="2" fill="var(--accent)"/><rect x="43" y="18" width="10" height="24" rx="2" fill="var(--accent)"/></svg><span style="font-size:12px;color:var(--text-secondary);text-align:center;line-height:1.6;max-width:140px">Import a CSV to<br>populate charts</span></div>`;
   const max = Math.max(...data.map(d=>d.value),1);
   const rowH=26, padL=60, padR=34, w=320, h=data.length*rowH+6;
   const bars = data.map((d,i)=>{
@@ -2047,10 +2046,10 @@ function renderDashboard(){
 
   $('dashContent').innerHTML = `
     <div class="kpi-grid">
-      <div class="kpi"><div class="label">Companies</div><div class="value">${cos.length.toLocaleString()}</div><div class="sub">in database</div></div>
-      <div class="kpi"><div class="label">Contacts</div><div class="value">${cns.length.toLocaleString()}</div><div class="sub">secondary stakeholders</div></div>
-      <div class="kpi"><div class="label">Pending</div><div class="value">${pending.toLocaleString()}</div><div class="sub">awaiting enrichment</div></div>
-      <div class="kpi"><div class="label">Verified</div><div class="value">${verified.toLocaleString()}</div><div class="sub up">ready to contact</div></div>
+      <div class="kpi"><div class="label">Companies</div><div class="value">${cos.length.toLocaleString()}</div><div class="sub">Total Accounts</div></div>
+      <div class="kpi"><div class="label">Contacts</div><div class="value">${cns.length.toLocaleString()}</div><div class="sub">Total Contacts</div></div>
+      <div class="kpi"><div class="label">Pending</div><div class="value">${pending.toLocaleString()}</div><div class="sub">Needs Enrichment</div></div>
+      <div class="kpi"><div class="label">Verified</div><div class="value">${verified.toLocaleString()}</div><div class="sub up">Ready to Contact</div></div>
     </div>
     <div class="chart-grid">
       <div class="card"><h3>Imports Over Time</h3>${svgBars(overTime)}</div>
@@ -2064,14 +2063,9 @@ function renderDashboard(){
 }
 
 function renderSidebarStats(){
-  const today=todayISO();
-  const pending=State.companies.filter(c=>c.status==='Pending').length;
-  const verified=State.companies.filter(c=>c.status==='Verified').length;
-  $('sidebarStats').innerHTML=`<h4>Database</h4>`
-    +`<div class="stat-row"><span class="dot" style="background:#2563eb"></span>Companies<span class="cnt">${State.companies.length.toLocaleString()}</span></div>`
-    +`<div class="stat-row"><span class="dot" style="background:#7c3aed"></span>Contacts<span class="cnt">${State.contacts.length.toLocaleString()}</span></div>`
-    +`<div class="stat-row"><span class="dot" style="background:#6b7280"></span>Pending<span class="cnt">${pending.toLocaleString()}</span></div>`
-    +`<div class="stat-row"><span class="dot" style="background:#16a34a"></span>Verified<span class="cnt">${verified.toLocaleString()}</span></div>`;
+  const el=$('sidebarStats');
+  el.innerHTML='';
+  el.style.display='none';
 }
 
 function renderActiveView(){
