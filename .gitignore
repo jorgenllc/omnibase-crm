@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Data — never commit real company/contact CSVs
+data/
+*.csv
+*.xlsx
+*.xls
+
+# Secrets & env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# macOS
+.DS_Store
+*.command
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Uploads / output
+raw_uploads/
+enriched_leads.csv
