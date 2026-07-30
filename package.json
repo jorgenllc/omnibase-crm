@@ -1,0 +1,12 @@
+{
+  "name": "omnibase-crm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "htmlhint lead_manager.html",
+    "lint:fix": "echo 'HTMLHint does not auto-fix; review output above and edit manually.'"
+  },
+  "devDependencies": {
+    "htmlhint": "^1.1.4"
+  }
+}
