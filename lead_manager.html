@@ -497,13 +497,13 @@ button:focus-visible, .chip:focus-visible, .tab:focus-visible, a:focus-visible {
   height: 52px; padding: 0 14px;
   gap: 10px;
 }
-.sidebar .logo .mark {
-  background: var(--sf-blue);
-  border-radius: 5px; width: 28px; height: 28px;
-  font-size: 13px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; flex-shrink: 0;
+.sidebar .logo img {
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  object-fit: contain;
+  display: block;
 }
+.app.collapsed .sidebar .logo { justify-content: center; padding: 0 8px; }
 .logo-name { color: #fff; font-size: 14px; font-weight: 700; }
 .logo-sub { color: rgba(255,255,255,.5); font-size: 12px; letter-spacing: .07em; }
 .collapse-toggle { color: rgba(255,255,255,.6) !important; }
@@ -1082,8 +1082,7 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
   <!-- ===================== SIDEBAR ===================== -->
   <aside class="sidebar">
     <div class="logo">
-      <img src="omnibase-logo.svg" alt="OmniBase" width="40" height="40"
-           style="flex:0 0 auto;object-fit:contain;">
+      <img src="omnibase-logo.svg" alt="OmniBase" width="36" height="36">
       <div class="logo-text">
         <span class="logo-name">OmniBase</span>
         <span class="logo-sub">CRM</span>
