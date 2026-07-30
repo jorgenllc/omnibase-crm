@@ -5,6 +5,6 @@
   "installCommand": null,
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/", "destination": "/lead_manager.html" }
+    { "source": "/", "destination": "/lead_manager" }
   ]
 }
