@@ -146,7 +146,7 @@ a{color:var(--accent);}
 .tag{display:inline-block; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:5px;
   padding:1px 6px; font-size:11px; margin-right:3px;}
 .row-actions{display:flex; gap:4px;}
-.row-actions button{width:28px;height:28px;border:1px solid var(--border);background:var(--bg-secondary);
+.row-actions button{min-width:36px;min-height:36px;border:1px solid var(--border);background:var(--bg-secondary);
   border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-primary);}
 .row-actions button:hover{background:var(--bg-tertiary);}
 .table-empty{padding:60px 20px; text-align:center; color:var(--text-secondary);}
@@ -352,6 +352,7 @@ html[data-theme="dark"] {
   --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
   --shadow:    0 2px 8px rgba(0,0,0,.55);
   --shadow-lg: 0 8px 24px rgba(0,0,0,.65);
+  --sf-blue-bg: #12233d;
 }
 
 /* ── Typography ────────────────────────────────────────── */
@@ -396,7 +397,7 @@ body {
   border: 1px solid transparent;
   border-radius: 4px;
   color: rgba(255,255,255,.82);
-  width: 32px; height: 32px;
+  min-width: 44px; min-height: 44px;
   transition: background .12s;
 }
 .icon-btn:hover {
@@ -452,6 +453,13 @@ body {
 .topbar .btn-enrich { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.28); color: rgba(255,255,255,.88); }
 .topbar .btn-enrich:hover { background: rgba(255,255,255,.16); }
 .topbar .icon-btn { color: rgba(255,255,255,.82); }
+.topbar .btn-sm { height: 32px; }
+
+/* Keyboard focus indicators */
+button:focus-visible, .chip:focus-visible, .tab:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* ── Sidebar — SLDS dark nav ───────────────────────────── */
 .sidebar {
@@ -1085,6 +1093,7 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
         <rect x="0" y="13" width="5" height="5" rx="1"/><rect x="6.5" y="13" width="5" height="5" rx="1"/><rect x="13" y="13" width="5" height="5" rx="1"/>
       </svg>
     </button>
+    <span class="topbar-brand">OmniBase</span>
     <div class="search-wrap">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
       <input id="globalSearch" type="search" placeholder="Search companies, contacts, email, city…" aria-label="Global search">
@@ -1125,21 +1134,21 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
       <!-- SLDS Object Page Header (breadcrumb + actions row) -->
       <div style="background:var(--bg-primary);border-bottom:1px solid var(--border);padding:10px 16px 0;flex-shrink:0;">
         <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-secondary);margin-bottom:8px;">
-          <span style="color:var(--accent);cursor:pointer">OmniBase</span>
+          <button type="button" id="breadcrumbHome" style="background:none;border:none;padding:0;color:var(--accent);cursor:pointer;font-size:inherit;font-family:inherit;line-height:inherit">OmniBase</button>
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           <span id="breadcrumbCurrent" style="color:var(--text-primary);font-weight:600">Dashboard</span>
         </div>
         <!-- SLDS Tab strip -->
-        <div class="tab-strip" style="border-bottom:none;padding:0;margin:0 -16px;padding:0 16px;">
-          <button class="tab active" data-tab="companies" id="tab-companies">
+        <div class="tab-strip" role="tablist" aria-label="Data views" style="border-bottom:none;padding:0;margin:0 -16px;padding:0 16px;">
+          <button class="tab active" role="tab" aria-selected="true" data-tab="companies" id="tab-companies">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
             Accounts <span class="tab-count" id="coTabCount">0</span>
           </button>
-          <button class="tab" data-tab="contacts" id="tab-contacts">
+          <button class="tab" role="tab" aria-selected="false" data-tab="contacts" id="tab-contacts">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             Contacts <span class="tab-count" id="cnTabCount">0</span>
           </button>
-          <button class="tab" data-tab="enrich" id="tab-enrich">
+          <button class="tab" role="tab" aria-selected="false" data-tab="enrich" id="tab-enrich">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             Enrich
           </button>
@@ -1153,24 +1162,24 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
       <div class="omni-filter-bar" id="omniFilterBar">
         <div class="filter-group">
           <span class="filter-label">Segment</span>
-          <button class="chip seg-smb" data-seg="SMB">SMB</button>
-          <button class="chip seg-mid" data-seg="Mid-Market">Mid-Market</button>
-          <button class="chip seg-ent" data-seg="Enterprise">Enterprise</button>
+          <button class="chip seg-smb" aria-pressed="false" data-seg="SMB">SMB</button>
+          <button class="chip seg-mid" aria-pressed="false" data-seg="Mid-Market">Mid-Market</button>
+          <button class="chip seg-ent" aria-pressed="false" data-seg="Enterprise">Enterprise</button>
         </div>
         <div class="filter-sep"></div>
         <div class="filter-group">
           <span class="filter-label">Industry</span>
-          <button class="chip ind-home"  data-ind="Home Services">Home Services</button>
-          <button class="chip ind-const" data-ind="Construction">Construction</button>
-          <button class="chip ind-fac"   data-ind="Facility Maintenance">Facility Maint.</button>
+          <button class="chip ind-home"  aria-pressed="false" data-ind="Home Services">Home Services</button>
+          <button class="chip ind-const" aria-pressed="false" data-ind="Construction">Construction</button>
+          <button class="chip ind-fac"   aria-pressed="false" data-ind="Facility Maintenance">Facility Maint.</button>
         </div>
         <div class="filter-sep"></div>
         <div class="filter-group">
           <span class="filter-label">Status</span>
-          <button class="chip st-pending" data-st="Pending">Pending</button>
-          <button class="chip st-verified" data-st="Verified">Verified</button>
-          <button class="chip st-contacted" data-st="Contacted">Contacted</button>
-          <button class="chip st-archived" data-st="Archived">Archived</button>
+          <button class="chip st-pending"   aria-pressed="false" data-st="Pending">Pending</button>
+          <button class="chip st-verified"  aria-pressed="false" data-st="Verified">Verified</button>
+          <button class="chip st-contacted" aria-pressed="false" data-st="Contacted">Contacted</button>
+          <button class="chip st-archived"  aria-pressed="false" data-st="Archived">Archived</button>
         </div>
         <span class="omni-count" id="omniCount"></span>
       </div>
@@ -1305,24 +1314,24 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
   <div class="modal-body">
     <input type="hidden" id="fc_id">
     <div class="form-grid">
-      <div class="field"><label>Record ID <span style="font-size:11px;color:var(--text-secondary)">(11-digit text)</span></label><input id="fc_record_id" placeholder="auto-generated" style="font-family:ui-monospace,monospace"></div>
-      <div class="field"><label>Company Name <span class="req">*</span></label><input id="fc_company_name" required></div>
-      <div class="field"><label>Website / Domain</label><input id="fc_website" placeholder="example.com"></div>
-      <div class="field"><label>Market Segment</label><select id="fc_market_segment"><option value="">—</option><option>SMB</option><option>Mid-Market</option><option>Enterprise</option></select></div>
-      <div class="field"><label>Industry</label><select id="fc_macro_industry"></select></div>
-      <div class="field"><label>Sub-Trade</label><select id="fc_sub_industries"></select></div>
-      <div class="field"><label>Business Sector</label><select id="fc_business_sector"><option value="">—</option><option>Residential</option><option>Commercial</option><option>Both</option></select></div>
-      <div class="field"><label>City</label><input id="fc_city"></div>
-      <div class="field"><label>State</label><select id="fc_state"></select></div>
-      <div class="field"><label>Employee Count</label><input id="fc_employee_count" type="number" min="0" placeholder="0"></div>
-      <div class="field"><label>Revenue</label><input id="fc_revenue" placeholder="e.g. $2M"></div>
-      <div class="field full"><label>Tech Stack</label><input id="fc_tech_stack" placeholder="e.g. ServiceTitan, QuickBooks, Jobber"></div>
-      <div class="field"><label>Owner Name</label><input id="fc_owner_name"></div>
-      <div class="field"><label>Owner Title</label><input id="fc_owner_title" placeholder="e.g. Owner, CEO"></div>
-      <div class="field"><label>Owner Email</label><input id="fc_owner_email" type="email"></div>
-      <div class="field"><label>Owner Phone</label><input id="fc_owner_phone" placeholder="(555) 000-0000"></div>
-      <div class="field"><label>Status</label><select id="fc_status"><option>Pending</option><option>Verified</option><option>Contacted</option><option>Archived</option></select></div>
-      <div class="field full"><label>Notes</label>
+      <div class="field"><label for="fc_record_id">Record ID <span style="font-size:11px;color:var(--text-secondary)">(11-digit text)</span></label><input id="fc_record_id" placeholder="auto-generated" style="font-family:ui-monospace,monospace"></div>
+      <div class="field"><label for="fc_company_name">Company Name <span class="req">*</span></label><input id="fc_company_name" required></div>
+      <div class="field"><label for="fc_website">Website / Domain</label><input id="fc_website" placeholder="example.com"></div>
+      <div class="field"><label for="fc_market_segment">Market Segment</label><select id="fc_market_segment"><option value="">—</option><option>SMB</option><option>Mid-Market</option><option>Enterprise</option></select></div>
+      <div class="field"><label for="fc_macro_industry">Industry</label><select id="fc_macro_industry"></select></div>
+      <div class="field"><label for="fc_sub_industries">Sub-Trade</label><select id="fc_sub_industries"></select></div>
+      <div class="field"><label for="fc_business_sector">Business Sector</label><select id="fc_business_sector"><option value="">—</option><option>Residential</option><option>Commercial</option><option>Both</option></select></div>
+      <div class="field"><label for="fc_city">City</label><input id="fc_city"></div>
+      <div class="field"><label for="fc_state">State</label><select id="fc_state"></select></div>
+      <div class="field"><label for="fc_employee_count">Employee Count</label><input id="fc_employee_count" type="number" min="0" placeholder="0"></div>
+      <div class="field"><label for="fc_revenue">Revenue</label><input id="fc_revenue" placeholder="e.g. $2M"></div>
+      <div class="field full"><label for="fc_tech_stack">Tech Stack</label><input id="fc_tech_stack" placeholder="e.g. ServiceTitan, QuickBooks, Jobber"></div>
+      <div class="field"><label for="fc_owner_name">Owner Name</label><input id="fc_owner_name"></div>
+      <div class="field"><label for="fc_owner_title">Owner Title</label><input id="fc_owner_title" placeholder="e.g. Owner, CEO"></div>
+      <div class="field"><label for="fc_owner_email">Owner Email</label><input id="fc_owner_email" type="email"></div>
+      <div class="field"><label for="fc_owner_phone">Owner Phone</label><input id="fc_owner_phone" placeholder="(555) 000-0000"></div>
+      <div class="field"><label for="fc_status">Status</label><select id="fc_status"><option>Pending</option><option>Verified</option><option>Contacted</option><option>Archived</option></select></div>
+      <div class="field full"><label for="coNoteEntry">Notes</label>
         <div class="notes-list" id="coNotesList"></div>
         <div class="two" style="grid-template-columns:1fr auto"><textarea id="coNoteEntry" rows="2" placeholder="Add a note…"></textarea><button class="btn" id="coAddNoteBtn" type="button">Add Note</button></div>
       </div>
@@ -1348,12 +1357,12 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
     <input type="hidden" id="fn_record_id">
     <input type="hidden" id="fn_company_record_id">
     <div class="form-grid">
-      <div class="field"><label>First Name <span class="req">*</span></label><input id="fn_first_name" placeholder="First" autocomplete="off"></div>
-      <div class="field"><label>Last Name</label><input id="fn_last_name" placeholder="Last" autocomplete="off"></div>
-      <div class="field full"><label>Company</label><input id="fn_company_name" placeholder="Search or type company name…" list="fn_company_list" autocomplete="off"><datalist id="fn_company_list"></datalist></div>
-      <div class="field full"><label>Title</label><input id="fn_title" placeholder="e.g. Operations Manager"></div>
-      <div class="field"><label>Email</label><input id="fn_email" type="email" autocomplete="off"></div>
-      <div class="field"><label>Phone</label><input id="fn_phone" placeholder="(555) 000-0000"></div>
+      <div class="field"><label for="fn_first_name">First Name <span class="req">*</span></label><input id="fn_first_name" placeholder="First" autocomplete="off"></div>
+      <div class="field"><label for="fn_last_name">Last Name</label><input id="fn_last_name" placeholder="Last" autocomplete="off"></div>
+      <div class="field full"><label for="fn_company_name">Company</label><input id="fn_company_name" placeholder="Search or type company name…" list="fn_company_list" autocomplete="off"><datalist id="fn_company_list"></datalist></div>
+      <div class="field full"><label for="fn_title">Title</label><input id="fn_title" placeholder="e.g. Operations Manager"></div>
+      <div class="field"><label for="fn_email">Email</label><input id="fn_email" type="email" autocomplete="off"></div>
+      <div class="field"><label for="fn_phone">Phone</label><input id="fn_phone" placeholder="(555) 000-0000"></div>
     </div>
   </div>
   <div class="modal-foot">
@@ -3559,6 +3568,53 @@ document.addEventListener('DOMContentLoaded', function() {
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') window.saveActivity();
   });
 });
+</script>
+
+<script>
+/* ── UX a11y patch: aria sync + breadcrumb nav ── */
+(function () {
+  // Breadcrumb home → navigate to dashboard view
+  const crumb = document.getElementById('breadcrumbHome');
+  if (crumb) {
+    crumb.addEventListener('click', () => {
+      if (typeof setView === 'function') setView('dashboard');
+    });
+  }
+
+  // Keep aria-selected in sync after core JS toggles .active on tab buttons
+  document.querySelectorAll('[role="tablist"] [role="tab"]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('[role="tab"]').forEach(t => {
+          t.setAttribute('aria-selected', t.classList.contains('active') ? 'true' : 'false');
+        });
+      });
+    });
+  });
+
+  // Keep aria-pressed in sync after core JS toggles .on on chip buttons
+  const filterBar = document.getElementById('omniFilterBar');
+  if (filterBar) {
+    filterBar.addEventListener('click', e => {
+      const chip = e.target.closest('.chip[aria-pressed]');
+      if (!chip) return;
+      requestAnimationFrame(() => {
+        chip.setAttribute('aria-pressed', chip.classList.contains('on') ? 'true' : 'false');
+      });
+    });
+  }
+
+  // Reset aria-pressed when clear-filters fires
+  const clearBtn = document.getElementById('clearFiltersBtn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.omni-filter-bar .chip[aria-pressed]')
+          .forEach(c => c.setAttribute('aria-pressed', 'false'));
+      });
+    });
+  }
+})();
 </script>
 </body>
 </html>
