@@ -111,6 +111,7 @@ a{color:var(--accent);}
 .chip{padding:5px 11px; border-radius:999px; border:1px solid var(--border); background:var(--bg-secondary);
   font-size:13px; color:var(--text-primary);}
 .chip.on{background:var(--accent); color:#fff; border-color:var(--accent);}
+.chip.on::before{content:'✓ '; font-size:.85em; font-weight:700;}
 .chip.preset{background:var(--bg-tertiary);}
 .chip-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-right:2px;}
 .adv-row{display:flex; gap:8px; margin-top:8px; align-items:center; flex-wrap:wrap;}
@@ -318,7 +319,7 @@ html[data-theme="dark"] .dup-warn{background:#422006; border-color:#a16207; colo
   --border:         #dddbda;
   --border-strong:  #c9c7c5;
   --text-primary:   #181818;
-  --text-secondary: #706e6b;
+  --text-secondary: #5c5a57;
   --text-label:     #3e3e3c;
 
   --accent:         #0176d3;
@@ -333,6 +334,12 @@ html[data-theme="dark"] .dup-warn{background:#422006; border-color:#a16207; colo
 
   --row-h:      40px;
   --sidebar-w:  240px;
+
+  /* Type-scale tokens (base 13 px, ratio 1.25) */
+  --type-display: 20px;
+  --type-heading: 16px;
+  --type-body:    13px;
+  --type-caption: 12px;
 }
 html[data-theme="dark"] {
   --bg-primary:    #1b1b1b;
@@ -389,7 +396,7 @@ body {
   border-color: rgba(255,255,255,.5);
 }
 .topbar .search-wrap svg { color: rgba(255,255,255,.7); }
-.saved-indicator { color: rgba(255,255,255,.55); font-size: 11px; }
+.saved-indicator { color: rgba(255,255,255,.55); font-size: 12px; }
 
 /* Icon buttons in topbar — ghost on dark */
 .icon-btn {
@@ -461,6 +468,24 @@ button:focus-visible, .chip:focus-visible, .tab:focus-visible, a:focus-visible {
   outline-offset: 2px;
 }
 
+/* Skip-navigation link (W3) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: var(--type-body);
+  font-weight: 600;
+  z-index: 9999;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 8px;
+}
+
 /* ── Sidebar — SLDS dark nav ───────────────────────────── */
 .sidebar {
   background: var(--bg-sidebar);
@@ -480,7 +505,7 @@ button:focus-visible, .chip:focus-visible, .tab:focus-visible, a:focus-visible {
   color: #fff; flex-shrink: 0;
 }
 .logo-name { color: #fff; font-size: 14px; font-weight: 700; }
-.logo-sub { color: rgba(255,255,255,.5); font-size: 10px; letter-spacing: .07em; }
+.logo-sub { color: rgba(255,255,255,.5); font-size: 12px; letter-spacing: .07em; }
 .collapse-toggle { color: rgba(255,255,255,.6) !important; }
 .collapse-toggle:hover { background: rgba(255,255,255,.12) !important; border-color: transparent !important; }
 
@@ -693,6 +718,7 @@ dialog::backdrop { background: rgba(3,45,96,.35); backdrop-filter: blur(2px); }
 }
 .chip:hover { border-color: var(--accent); }
 .chip.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.chip.on::before { content: '✓\00a0'; font-size: .85em; font-weight: 700; }
 
 /* Segment chip active colors */
 .chip.seg-smb.on  { background: #0891b2; border-color: #0891b2; }
@@ -1040,9 +1066,18 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
 /* Hint rows are clickable in accounts table */
 #panel-companies .trow { cursor: pointer; }
 #panel-companies .trow:hover .tcell { background: rgba(1,118,211,.04); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
 </style>
 </head>
 <body>
+<a href="#mainContent" class="skip-link">Skip to main content</a>
 <div class="app" id="app">
   <!-- ===================== SIDEBAR ===================== -->
   <aside class="sidebar">
@@ -1101,18 +1136,18 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
     <span class="spacer" style="flex:1"></span>
     <button class="btn btn-sm" id="importBtn" title="Import CSV">📥 Import</button>
     <div class="dropdown">
-      <button class="btn btn-sm" id="exportBtn" title="Export (Cmd/Ctrl+E)">📤 Export ▾</button>
-      <div class="dropdown-menu" id="exportMenu">
-        <button class="item" data-export="all">Export All Leads (CSV)</button>
-        <button class="item" data-export="filtered">Export Current View (CSV)</button>
-        <button class="item" data-export="selected" id="exportSelected">Export Selected (CSV)</button>
+      <button class="btn btn-sm" id="exportBtn" title="Export (Cmd/Ctrl+E)" aria-haspopup="true" aria-expanded="false" aria-controls="exportMenu">📤 Export ▾</button>
+      <div class="dropdown-menu" id="exportMenu" role="menu">
+        <button class="item" role="menuitem" data-export="all">Export All Leads (CSV)</button>
+        <button class="item" role="menuitem" data-export="filtered">Export Current View (CSV)</button>
+        <button class="item" role="menuitem" data-export="selected" id="exportSelected">Export Selected (CSV)</button>
       </div>
     </div>
     <div class="dropdown">
-      <button class="btn btn-sm btn-enrich" id="enrichMenuBtn">✨ Enrich ▾</button>
-      <div class="dropdown-menu" id="enrichMenu">
-        <button class="item" id="enrichIndustryBtn">⚡ Auto-fill Industry (offline)</button>
-        <button class="item" id="enrichUrlBtn">🌐 Verify Website via Clearbit (online)</button>
+      <button class="btn btn-sm btn-enrich" id="enrichMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="enrichMenu">✨ Enrich ▾</button>
+      <div class="dropdown-menu" id="enrichMenu" role="menu">
+        <button class="item" role="menuitem" id="enrichIndustryBtn">⚡ Auto-fill Industry (offline)</button>
+        <button class="item" role="menuitem" id="enrichUrlBtn">🌐 Verify Website via Clearbit (online)</button>
       </div>
     </div>
     <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings">⚙️</button>
@@ -1122,7 +1157,7 @@ html[data-theme="dark"] .act-dot.task    { background: rgba(194,57,52,.18); }
   </header>
 
   <!-- ===================== MAIN ===================== -->
-  <main class="main">
+  <main class="main" id="mainContent">
     <!-- Dashboard view -->
     <section class="view active" id="view-dashboard">
       <div class="dash" id="dashContent"></div>
@@ -3614,6 +3649,126 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+})();
+</script>
+
+<script>
+/* ── Chart SVG accessibility (O4) ── */
+(function () {
+  function labelCharts(dash) {
+    dash.querySelectorAll('.card').forEach(card => {
+      const h = card.querySelector('h3');
+      const svg = card.querySelector('svg');
+      if (h && svg && !svg.getAttribute('aria-label')) {
+        svg.setAttribute('role', 'img');
+        svg.setAttribute('aria-label', h.textContent.trim() + ' chart');
+        svg.setAttribute('aria-hidden', 'false');
+      }
+    });
+  }
+  const dash = document.getElementById('dashContent');
+  if (dash) {
+    new MutationObserver(() => labelCharts(dash)).observe(dash, { childList: true });
+    labelCharts(dash);
+  }
+})();
+
+/* ── Enrich button progress feedback (O2) ── */
+(function () {
+  const ENRICH_BTNS = [
+    { id: 'enrichIndustryBtn', restoreMs: 2000 },
+    { id: 'enrichUrlBtn',      restoreMs: 4000 },
+  ];
+  ENRICH_BTNS.forEach(({ id, restoreMs }) => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    const orig = btn.onclick;
+    btn.onclick = function (e) {
+      const label = btn.innerHTML;
+      btn.innerHTML = '⏳ Working…';
+      btn.disabled = true;
+      try { orig?.call(this, e); } catch (_) {}
+      setTimeout(() => { btn.innerHTML = label; btn.disabled = false; }, restoreMs);
+    };
+  });
+})();
+
+/* ── Bulk-bar focus management (W4) ── */
+(function () {
+  const bar = document.getElementById('bulkBar');
+  if (!bar) return;
+  new MutationObserver(() => {
+    if (bar.classList.contains('show')) {
+      const first = bar.querySelector('button:not([disabled])');
+      if (first) requestAnimationFrame(() => first.focus());
+    }
+  }).observe(bar, { attributes: true, attributeFilter: ['class'] });
+})();
+
+/* ── Dropdown keyboard navigation + aria-expanded sync ── */
+(function () {
+  const DROPDOWNS = [
+    { triggerId: 'exportBtn',    menuId: 'exportMenu'  },
+    { triggerId: 'enrichMenuBtn', menuId: 'enrichMenu' },
+  ];
+
+  function getItems(menu) {
+    return [...menu.querySelectorAll('[role="menuitem"]:not([disabled])')];
+  }
+
+  function openMenu(trigger, menu) {
+    menu.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
+    const items = getItems(menu);
+    if (items.length) items[0].focus();
+  }
+
+  function closeMenu(trigger, menu) {
+    menu.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.focus();
+  }
+
+  DROPDOWNS.forEach(({ triggerId, menuId }) => {
+    const trigger = document.getElementById(triggerId);
+    const menu    = document.getElementById(menuId);
+    if (!trigger || !menu) return;
+
+    // Sync aria-expanded whenever the core JS toggles .open via its own onclick
+    new MutationObserver(() => {
+      trigger.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
+      if (menu.classList.contains('open')) {
+        const items = getItems(menu);
+        if (items.length) items[0].focus();
+      }
+    }).observe(menu, { attributes: true, attributeFilter: ['class'] });
+
+    // Keyboard nav inside open menu
+    menu.addEventListener('keydown', e => {
+      const items = getItems(menu);
+      const idx   = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        items[(idx + 1) % items.length]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(idx - 1 + items.length) % items.length]?.focus();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeMenu(trigger, menu);
+      } else if (e.key === 'Tab') {
+        closeMenu(trigger, menu);
+      }
+    });
+
+    // Escape on the trigger itself closes if open
+    trigger.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && menu.classList.contains('open')) {
+        e.preventDefault();
+        closeMenu(trigger, menu);
+      }
+    });
+  });
 })();
 </script>
 </body>
