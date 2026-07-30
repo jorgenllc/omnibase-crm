@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Wait for Vercel deployment to go live
         run: |
-          URL="https://omnibase-crm-baylitx-projects.vercel.app"
+          URL="https://omnibase-crm.vercel.app"
           MAX_RETRIES=18
           WAIT=10
 
@@ -53,7 +53,7 @@ jobs:
 
       - name: Verify page content
         run: |
-          URL="https://omnibase-crm-baylitx-projects.vercel.app"
+          URL="https://omnibase-crm.vercel.app"
           BODY=$(curl -s "$URL")
 
           if echo "$BODY" | grep -q "OmniBase"; then
